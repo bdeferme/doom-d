@@ -457,8 +457,8 @@ org-gcal-file-alist '(
 (use-package! org-pomodoro
   :after org
   :config
-  (setq org-pomodoro-length 25
-        org-pomodoro-clock-break t
+  (setq org-pomodoro-play-sounds nil
+        org-pomodoro-clock-break nil
         org-pomodoro-manual-break t))
 
 (use-package! org-download
