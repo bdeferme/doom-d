@@ -14,6 +14,9 @@
 (package! org-download)
 (package! indent-guide)
 (package! keyfreq)
+(package! devdocs)
+(package! org-alert)
+(package! rspec-mode)
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
