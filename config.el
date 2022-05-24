@@ -15,7 +15,7 @@
 (setq evil-split-window-below t
       evil-vsplit-window-right t)
 
-(setq projectile-project-search-path '("~/code/" "~/org/" "~/.local/src" "~/p" "~/pkm"))
+(setq projectile-project-search-path '("~/code/" "~/org/" "~/.local/src"))
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -45,6 +45,7 @@
   '(aw-leading-char-face
     :weight bold :foreground "red" :height 1.5))
 
+;; Deft for searching quickly
 (setq deft-directory "~/org/")
 (setq deft-recursive t)
 
@@ -55,6 +56,7 @@
 (setq org-roam-directory "~/org/roam")
 (setq org-roam-buffer-width 0.15)
 
+;;;; Some org settings
 (after! org
   (setq org-log-done t)
   (setq org-log-into-drawer t)
@@ -71,7 +73,7 @@
   (setq org-agenda-skip-deadline-prewarning-if-scheduled t)
   (setq org-clock-idle-time 15)
   (setq org-duration-format (quote h:mm))
-  (setq org-tags-exclude-from-inheritance '("monthA" "weekA"))
+  (setq org-tags-exclude-from-inheritance '("monthA" "weekA")) ;; No inheritance for these tags
   (setq org-global-properties
       '(("Effort_ALL" .
          "0:15 0:45 1:30 2:15 3:00 3:45 4:30 5:15 6:00 0:00")))
@@ -446,14 +448,6 @@ org-gcal-file-alist '(
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
 
-(use-package! org-journal
-  :after org
-  :config
-  (setq org-journal-dir "~/org/roam/daily"
-        org-journal-file-format "%Y-%m-%d.org"
-        org-journal-date-prefix "#+title: "
-        org-journal-date-format "%Y-%m-%d"))
-
 (use-package! org-pomodoro
   :after org
   :config
@@ -483,10 +477,28 @@ org-gcal-file-alist '(
             :append :local))
 
 (add-hook 'org-agenda-mode-hook 'my-inhibit-emojify-mode)
-(setq langtool-language-tool-jar "~/.local/bin/languagetool-commandline.jar")
-(setq langtool-java-classpath nil)
 
 (setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel 3 :narrow 80))
 
 (keyfreq-mode 1)
 (keyfreq-autosave-mode 1)
+
+;;;; Show a clock in the modeline
+(setq display-time-24hr-format '1)
+(setq display-time-day-and-date '1)
+(setq display-time-format "|%Y-%m-%d %a %H:%M|")
+(display-time-mode 1)
+
+;;;; Golden ratio mode
+(use-package zoom
+  :hook (doom-first-input . zoom-mode)
+  :config
+  (setq zoom-size '(0.618 . 0.618)
+        zoom-ignored-major-modes '(dired-mode vterm-mode help-mode helpful-mode rxt-help-mode help-mode-menu org-mode)
+        zoom-ignored-buffer-names '("*doom:scratch*" "*info*" "*helpful variable: argv*")
+        zoom-ignored-buffer-name-regexps '("^\\*calc" "\\*helpful variable: .*\\*" "^\\*Minibuf")))
+
+(map! :after zoom
+      :leader
+      :desc "Toggle Zoom mode"
+      "w z" #'zoom-mode)
